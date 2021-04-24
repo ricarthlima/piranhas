@@ -25,11 +25,19 @@
       <div id="unity-webgl-logo"></div>
       <div id="unity-fullscreen-button"></div>
       <div id="unity-build-title">
-        <form method="get" action="chrome-extension.zip">
+        <form method="get" action="0.1.5.apk">
           <button class="btn btn-info" type="submit">Download Android APK</button>
         </form>
       </div>
     </div>
+  </div>
+  <div id="mobile-container" style="padding: 50px;">
+    <center>
+      <h1>Download Android Version</h1>
+      <form method="get" action="0.1.5.apk">
+        <button class="btn btn-info" type="submit">Download Android APK</button>
+      </form>
+    </center>
   </div>
   <script>
     var buildUrl = "Build";
@@ -57,28 +65,33 @@
       mobileWarning.style.display = "block";
       setTimeout(() => {
         mobileWarning.style.display = "none";
-      }, 5000);
+      }, 4000);
+      showAndHide("mobile-container", "unity-container");
     } else {
       canvas.style.width = "1366px";
       canvas.style.height = "768px";
+      loadingBar.style.display = "block";
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
     }
-    loadingBar.style.display = "block";
 
-    var script = document.createElement("script");
-    script.src = loaderUrl;
-    script.onload = () => {
-      createUnityInstance(canvas, config, (progress) => {
-        progressBarFull.style.width = 100 * progress + "%";
-      }).then((unityInstance) => {
-        loadingBar.style.display = "none";
-        fullscreenButton.onclick = () => {
-          unityInstance.SetFullscreen(1);
-        };
-      }).catch((message) => {
-        alert(message);
-      });
-    };
-    document.body.appendChild(script);
+    function showAndHide(toShow, toHide) {
+      document.getElementById(toHide).style.display = "none";
+      document.getElementById(toShow).style.display = "block";
+    }
   </script>
 </body>
 
