@@ -38,7 +38,7 @@
   </div>
   <div id="mobile-container" style="padding: 25px; color: white;">
     <center>
-      <h1 style="font-family: 'Hammersmith One', sans-serif; font-size: 6em; color: orange;">Piranha Attack</h1>
+      <h1 style="font-family: 'Hammersmith One', sans-serif; color: orange;">Piranha Attack</h1>
       <img style="width: 100%; max-width: 1000px;" src="screeshot.jfif">
       <br><br>WebGL builds are not supported on mobile devices. Please download and install mobile version.
       <form method="get" action="piranha_attack.apk" style="margin-top: 15px;">
@@ -67,14 +67,16 @@
     var mobileWarning = document.querySelector("#unity-mobile-warning");
 
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      showAndHide("mobile-container", "unity-container");
       container.className = "unity-mobile";
       config.devicePixelRatio = 1;
       mobileWarning.style.display = "block";
       setTimeout(() => {
         mobileWarning.style.display = "none";
       }, 4000);
-      showAndHide("mobile-container", "unity-container");
+
     } else {
+      showAndHide("unity-container", "mobile-container");
       canvas.style.width = "1366px";
       canvas.style.height = "768px";
       loadingBar.style.display = "block";
